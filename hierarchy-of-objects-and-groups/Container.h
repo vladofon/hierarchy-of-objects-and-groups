@@ -15,9 +15,19 @@ public:
       add_node(get_last_node(), item);
    }
 
+   void set(T item, const int index)
+   {
+      set_node(get_node(index), item);
+   }
+
    T get(const int index)
    {
       return get_node(index)->item;
+   }
+
+   int get_size() const
+   {
+      return this->size_;
    }
 
 private:
@@ -75,5 +85,10 @@ private:
       }
 
       size_++;
+   }
+
+   void set_node(node* n, T item)
+   {
+      n->item = item;
    }
 };
