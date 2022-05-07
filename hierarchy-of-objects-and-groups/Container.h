@@ -25,6 +25,21 @@ public:
       return get_node(index)->item;
    }
 
+   void cancel()
+   {
+      remove_node(size_ - 1);
+   }
+
+   T peek()
+   {
+      return get_node(size_ - 1)->item;
+   }
+
+   void remove(const int index)
+   {
+      remove_node(index);
+   }
+
    int get_size() const
    {
       return this->size_;
@@ -90,5 +105,15 @@ private:
    void set_node(node* n, T item)
    {
       n->item = item;
+   }
+
+   void remove_node(const int index)
+   {
+      node* previous = get_node(index);
+      node* to_delete = previous->p_next;
+
+      previous->p_next = to_delete->p_next;
+
+      delete to_delete;
    }
 };
