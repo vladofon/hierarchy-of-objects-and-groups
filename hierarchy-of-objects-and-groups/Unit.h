@@ -15,7 +15,6 @@ public:
       this->name_ = "empty";
       this->subunits_ = new container<U>();
       this->people_ = new container<P>();
-      this->depth_ = 0;
    }
 
    explicit unit(string name)
@@ -23,18 +22,17 @@ public:
       this->name_ = name;
       this->subunits_ = new container<U>();
       this->people_ = new container<P>();
-      this->depth_ = 0;
    }
 
-   void add_unit(const string name, const string existing = "")
+   virtual void add_unit(const string name, const string existing = "")
    {
-      if (existing == "")
+      if (existing.empty())
       {
-         subunits_->add(new U(name));
+         subunits_->add(U(name));
       }
       else
       {
-
+         find_unit(existing).add_unit(name);
       }
    }
 
@@ -53,19 +51,32 @@ public:
       return people_;
    }
 
-   string to_string() override;
+   bool is_exist() const
+   {
+      if (subunits_->get_size() == 0 && people_->get_size() == 0)
+      {
+         return false;
+      }
 
-private:
+      return true;
+   }
+
+   string to_string() override
+   {
+      return "unit";
+   }
+
+protected:
 
    string name_;
    container<U>* subunits_;
    container<P>* people_;
 
-   U find_unittttt(const string name)
+   U find_unit(const string name)
    {
       U parent = this;
       auto steps = new container<int>();
-      int unit_col_index = 0;
+      int unit_col_index = -1;
       int position_index = 0;
       bool depth_changed = true;
 
@@ -97,7 +108,42 @@ private:
             }
          }
 
-         parent = find_unit(steps);
+         int last_member = steps->peek() - 1;
+         if (is_way_exist(steps))
+         {
+            parent = find_unit(steps);
+         }
+         else
+         {
+            depth_changed = true;
+            steps->cancel();
+
+            bool is_way_found = false;
+            int parent_counter = 0;
+            while (parent_counter <= last_member)
+            {
+               steps->add(parent_counter);
+               steps->add(0);
+
+               if (is_way_exist(steps))
+               {
+                  is_way_found = true;
+                  break;
+               }
+               else
+               {
+                  steps->cancel();
+                  steps->cancel();
+
+                  parent_counter++;
+               }
+            }
+
+            if (!is_way_found)
+            {
+               return U();
+            }
+         }
       }
    }
 
