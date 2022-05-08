@@ -1,64 +1,61 @@
 #pragma once
 #include "Object.h"
+#include "Person.h"
 #include "Container.h"
 
-using namespace std;
 
-/* U - unit, P - person */
-template<class U, class P>
 class unit : public object
 {
 public:
 
    unit()
    {
-      this->name_ = "empty";
-      this->subunits_ = new container<U>();
-      this->people_ = new container<P>();
+      this->name_ = "";
+      this->people_ = nullptr;
+      this->subunits_ = nullptr;
    }
 
-   explicit unit(string name)
+   explicit unit(const string& name)
    {
       this->name_ = name;
-      this->subunits_ = new container<U>();
-      this->people_ = new container<P>();
+      this->people_ = nullptr;
+      this->subunits_ = nullptr;
    }
 
-   virtual void add_unit(const string name, const string existing = "")
-   {
-      if (existing.empty())
-      {
-         subunits_->add(U(name));
-      }
-      else
-      {
-         find_unit(existing).add_unit(name);
-      }
-   }
+   virtual void add_unit(const string name, const string existing = "") = 0;
+
+   virtual unit* find_unit(const string name) = 0;
+
+   virtual bool is_exist() = 0;
 
    string get_name() const
    {
-      return this->name_;
+      return name_;
    }
 
-   container<U>* get_subunits() const
+   void set_name(string name)
+   {
+      name_ = std::move(name);
+   }
+
+   container<unit*>* get_subunits() const
    {
       return subunits_;
    }
 
-   container<P>* get_people() const
+   void set_subunits(container<unit*>* const subunits)
+   {
+      subunits_ = subunits;
+   }
+
+   container<person*>* get_people() const
    {
       return people_;
    }
 
-   bool is_exist() const
+   void set_people(container<person*>* const people)
    {
-      if (subunits_->get_size() == 0 && people_->get_size() == 0)
-      {
-         return false;
-      }
-
-      return true;
+      people_ = people;
    }
 
    string to_string() override
@@ -69,87 +66,12 @@ public:
 protected:
 
    string name_;
-   container<U>* subunits_;
-   container<P>* people_;
+   container<unit*>* subunits_;
+   container<person*>* people_;
 
-   U find_unit(const string name)
+   unit* find_unit_by_steps(container<int>* steps)
    {
-      U parent = this;
-      auto steps = new container<int>();
-      int unit_col_index = -1;
-      int position_index = 0;
-      bool depth_changed = true;
-
-      while (true)
-      {
-         int unit_index = check_units(parent->get_subunits(), name);
-
-         if (unit_index != -1)
-         {
-            return parent->get_subunits->get(unit_index);
-         }
-         else
-         {
-            if (depth_changed)
-            {
-               if (parent->get_subunits->get_size() != 0)
-               {
-                  steps->add(unit_col_index);
-                  position_index++;
-                  unit_col_index = 0;
-                  depth_changed = false;
-               }
-
-            }
-            else
-            {
-               unit_col_index++;
-               steps->set(unit_col_index, position_index);
-            }
-         }
-
-         int last_member = steps->peek() - 1;
-         if (is_way_exist(steps))
-         {
-            parent = find_unit(steps);
-         }
-         else
-         {
-            depth_changed = true;
-            steps->cancel();
-
-            bool is_way_found = false;
-            int parent_counter = 0;
-            while (parent_counter <= last_member)
-            {
-               steps->add(parent_counter);
-               steps->add(0);
-
-               if (is_way_exist(steps))
-               {
-                  is_way_found = true;
-                  break;
-               }
-               else
-               {
-                  steps->cancel();
-                  steps->cancel();
-
-                  parent_counter++;
-               }
-            }
-
-            if (!is_way_found)
-            {
-               return U();
-            }
-         }
-      }
-   }
-
-   U find_unit(container<int>* steps)
-   {
-      U parent = this;
+      auto parent = this;
 
       for (int i = 0; i < steps->get_size(); i++)
       {
@@ -159,7 +81,7 @@ protected:
       return parent;
    }
 
-   static int check_units(container<U>* units, string identifier)
+   static int check_units(container<unit*>* units, const string& identifier)
    {
       for (int i = 0; i < units->get_size(); i++)
       {
@@ -172,9 +94,9 @@ protected:
       return -1;
    }
 
-   bool is_way_exist(container<int>* steps)
+   bool is_way_exist(container<int>* steps) const
    {
-      U parent = this;
+      auto parent = this;
 
       for (int i = 0; i < steps->get_size(); i++)
       {
@@ -188,5 +110,4 @@ protected:
 
       return true;
    }
-
 };
