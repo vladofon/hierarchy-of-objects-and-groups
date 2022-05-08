@@ -10,12 +10,16 @@ public:
    cathedra()
       :unit()
    {
+      set_subunits(new container<unit*>());
+      set_people(new container<person*>());
    }
 
    explicit cathedra(const string& name)
       : unit(name)
 
    {
+      set_subunits(new container<unit*>());
+      set_people(new container<person*>());
    }
 
    void add_unit(const string name, const string existing = "") override
