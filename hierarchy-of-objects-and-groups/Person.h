@@ -19,10 +19,10 @@ public:
 
    string to_string() override
    {
-      return "Person [name=" + name_ + "];";
+      return "Person [name=\"" + name_ + "\"];";
    }
 
-private:
+protected:
 
    string name_;
 };

@@ -1,7 +1,8 @@
 #pragma once
+#include "Object.h"
 
 template<class T>
-class container
+class container : public object
 {
 public:
    container()
@@ -115,5 +116,20 @@ private:
       previous->p_next = to_delete->p_next;
 
       delete to_delete;
+   }
+
+public:
+   std::string to_string() override
+   {
+      std::string dump = "Container [\n  size=" + std::to_string(size_) + "\n  items: ";
+
+      for (int i = 0; i < get_size(); i++)
+      {
+         dump += "\n  {" + get(i)->to_string() + "}, ";
+      }
+
+      dump += "]";
+
+      return dump;
    }
 };
