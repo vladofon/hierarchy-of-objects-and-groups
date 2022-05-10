@@ -2,6 +2,7 @@
 #include "Unit.h"
 #include "Person.h"
 #include "Teacher.h"
+#include <typeinfo>
 
 
 class cathedra : public unit
@@ -23,15 +24,20 @@ public:
       set_people(new container<person*>());
    }
 
-   void add_unit(const string name, const string existing = "") override
+   void add_unit(unit* new_unit, const string existing = "") override
    {
+      if (!is_unit_permitted(string(typeid(*new_unit).name()).substr(6)))
+      {
+         return;
+      }
+
       if (existing.empty())
       {
-         subunits_->add(new cathedra(name));
+         subunits_->add(new_unit);
       }
       else
       {
-         find_unit(existing)->add_unit(name);
+         find_unit(existing)->add_unit(new_unit);
       }
    }
 
@@ -55,5 +61,21 @@ public:
       }
 
       return true;
+   }
+
+   bool is_unit_permitted(const string new_unit) override
+   {
+      constexpr int permitted_units_count = 0;
+      const auto permitted_units = new string[permitted_units_count];
+
+      for (int i = 0; i < permitted_units_count; i++)
+      {
+         if (permitted_units[i] == new_unit)
+         {
+            return true;
+         }
+      }
+
+      return false;
    }
 };
