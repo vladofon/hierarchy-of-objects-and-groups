@@ -18,7 +18,19 @@ public:
 
    void set(T item, const int index)
    {
-      set_node(get_node(index), item);
+      if (size_ >= index)
+      {
+         set_node(get_node(index), item);
+      }
+      else
+      {
+         while (size_ != index)
+         {
+            add(T());
+         }
+
+         set_node(get_node(index), item);
+      }
    }
 
    T get(const int index)
