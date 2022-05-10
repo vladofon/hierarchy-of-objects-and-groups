@@ -142,11 +142,17 @@
     <ClCompile Include="hierarchy-of-objects-and-groups.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="entity.h" />
-    <ClInclude Include="iterator.h" />
-    <ClInclude Include="student.h" />
-    <ClInclude Include="group.h" />
-    <ClInclude Include="student_iterator.h" />
+    <ClInclude Include="Container.h" />
+    <ClInclude Include="Director.h" />
+    <ClInclude Include="Faculty.h" />
+    <ClInclude Include="Group.h" />
+    <ClInclude Include="Integer.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="Person.h" />
+    <ClInclude Include="Student.h" />
+    <ClInclude Include="Teacher.h" />
+    <ClInclude Include="Unit.h" />
+    <ClInclude Include="Cathedra.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
