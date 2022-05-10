@@ -23,10 +23,11 @@ public:
       this->subunits_ = nullptr;
    }
 
-   virtual void add_unit(const string name, const string existing = "") = 0;
+   virtual void add_unit(unit* new_unit, const string existing = "") = 0;
    virtual void add_person(const string name) = 0;
 
    virtual bool is_exist() = 0;
+   virtual bool is_unit_permitted(string new_unit) = 0;
 
    unit* find_unit(const string& name)
    {
