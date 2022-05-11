@@ -8,15 +8,17 @@ public:
    student()
    {
       this->name_ = "undefined";
+      this->course_ = "undefined";
    }
 
-   explicit student(const string& name)
+   explicit student(const string& name, const string& course)
    {
       this->name_ = name;
+      this->course_ = course;
    }
 
    string to_string() override
    {
-      return "Student [name=\"" + name_ + "\"]";
+      return "Student [name=\"" + name_ + "\", course=\"" + course_ + "\"]";
    }
 };

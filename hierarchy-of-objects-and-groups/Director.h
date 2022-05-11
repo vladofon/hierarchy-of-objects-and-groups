@@ -8,11 +8,13 @@ public:
    director()
    {
       this->name_ = "undefined";
+      this->course_ = "undefined";
    }
 
-   explicit director(const string& name)
+   explicit director(const string& name, const string& course)
    {
       this->name_ = name;
+      this->course_ = course;
    }
 
    string to_string() override

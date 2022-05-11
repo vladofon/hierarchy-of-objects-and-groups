@@ -22,7 +22,18 @@ public:
       return "Person [name=\"" + name_ + "\"];";
    }
 
+   string get_course() const
+   {
+      return course_;
+   }
+
+   void set_course(string course)
+   {
+      course_ = std::move(course);
+   }
+
 protected:
 
    string name_;
+   string course_;
 };
