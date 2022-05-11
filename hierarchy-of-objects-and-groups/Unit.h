@@ -24,10 +24,13 @@ public:
    }
 
    virtual void add_unit(unit* new_unit, const string existing = "") = 0;
-   virtual void add_person(const string name) = 0;
+   virtual void add_person(const string name, const string course) = 0;
 
    virtual bool is_exist() = 0;
    virtual bool is_unit_permitted(string new_unit) = 0;
+
+   virtual void for_each_person(void(*function)(const void*)) = 0;
+   virtual void for_each_unit() = 0;
 
    unit* find_unit(const string& name)
    {
