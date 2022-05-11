@@ -40,9 +40,9 @@ public:
       }
    }
 
-   void add_person(const string name) override
+   void add_person(const string name, const string course) override
    {
-      people_->add(new student(name));
+      people_->add(new student(name, course));
    }
 
    string to_string() override
@@ -76,5 +76,18 @@ public:
       }
 
       return false;
+   }
+
+   void for_each_person(void(*function)(const void*)) override
+   {
+      for (int i = 0; i < people_->get_size(); i++)
+      {
+         function(people_->get(i));
+      }
+   }
+
+   void for_each_unit() override
+   {
+
    }
 };
